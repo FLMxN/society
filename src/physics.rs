@@ -25,9 +25,9 @@ pub fn flow(xs: &mut [Entity], dt: f32, strength: f32) {
 pub fn clash(xs: &mut [Entity]) {
     for i in 0..xs.len() {
         for j in (i + 1)..xs.len() {
-            if xs[i].kind != xs[j].kind {
-                continue;
-            }
+            // if xs[i].kind != xs[j].kind {
+            //     continue;
+            // }
 
             let delta = xs[j].pos - xs[i].pos;
             let dist = delta.length();
@@ -48,6 +48,35 @@ pub fn clash(xs: &mut [Entity]) {
                 let impulse = n * along * 0.5;
                 xs[i].speed += impulse;
                 xs[j].speed -= impulse;
+            }
+        }
+    }
+}
+
+pub fn constrain(xs: &mut [Entity], width: f32, height: f32) {
+    for x in xs.iter_mut() {
+        if x.pos.x - x.radius < 0.0 {
+            x.pos.x = x.radius;
+            if x.speed.x < 0.0 {
+                x.speed.x = -x.speed.x;
+            }
+        }
+        if x.pos.x + x.radius > width {
+            x.pos.x = width - x.radius;
+            if x.speed.x > 0.0 {
+                x.speed.x = -x.speed.x;
+            }
+        }
+        if x.pos.y - x.radius < 0.0 {
+            x.pos.y = x.radius;
+            if x.speed.y < 0.0 {
+                x.speed.y = -x.speed.y;
+            }
+        }
+        if x.pos.y + x.radius > height {
+            x.pos.y = height - x.radius;
+            if x.speed.y > 0.0 {
+                x.speed.y = -x.speed.y;
             }
         }
     }

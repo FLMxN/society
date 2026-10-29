@@ -1,29 +1,30 @@
 mod people;
 mod physics;
+mod entropy;
+
+use std::env;
 
 use macroquad::prelude::*;
 extern crate rand;
 
-use rand::Rng;
-
 use crate::people::Entity;
 use crate::people::Character::{Choleric, Sanguine, Phlegmatic, Melancholic};
+use crate::entropy::GenType::{LITTLE, MEDIUM, LARGE};
+use crate::entropy::genf32;
 
-use crate::physics::{flow, clash};
+use crate::physics::{flow, clash, constrain};
 
 #[macroquad::main("society v0.1")]
 async fn main() {
-    let mut rng = rand::thread_rng();
-
-    let mut population = vec![
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Choleric, vec2(1.0, 1.5), rng.gen_range(0..100) as f32),
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Choleric, vec2(1.0, 1.5), rng.gen_range(0..100) as f32),
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Choleric, vec2(1.0, 1.5), rng.gen_range(0..100) as f32),
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Choleric, vec2(1.0, 1.5), rng.gen_range(0..100) as f32),
-
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Sanguine, vec2(1.0, 1.5), rng.gen_range(0..100) as f32),
-        Entity::new(vec2(rng.gen_range(0..1000) as f32, rng.gen_range(0..1000) as f32), Sanguine, vec2(1.0, 1.5), rng.gen_range(0..100) as f32)
-    ];
+    let mut args: Vec<String> = env::args().skip(1).collect();
+    let n= args.pop().unwrap_or(String::try_from("1").unwrap()).parse::<i32>().unwrap();
+    let mut population: Vec<Entity> = vec![];
+    for _ in 0..n {
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Choleric, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Sanguine, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Phlegmatic, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Melancholic, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
+    }
 
     loop {
         let dt = get_frame_time().min(0.033);
@@ -36,6 +37,8 @@ async fn main() {
 
         clash(&mut population);
         clash(&mut population);
+
+        constrain(&mut population, screen_width(), screen_height());
 
         clear_background(BLACK);
         for x in &population {
