@@ -4,6 +4,7 @@ mod entropy;
 
 use std::env;
 
+use macroquad::input::KeyCode::L;
 use macroquad::prelude::*;
 extern crate rand;
 
@@ -20,10 +21,10 @@ async fn main() {
     let n= args.pop().unwrap_or(String::try_from("1").unwrap()).parse::<i32>().unwrap();
     let mut population: Vec<Entity> = vec![];
     for _ in 0..n {
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Choleric, vec2(10.0,10.0), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Sanguine, vec2(10.0,10.0), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Phlegmatic, vec2(10.0,10.0), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Melancholic, vec2(10.0,10.0), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Choleric, vec2(100.0,100.0), genf32(LITTLE)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Sanguine, vec2(100.0,100.0), genf32(LITTLE)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Phlegmatic, vec2(100.0,100.0), genf32(LITTLE)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Melancholic, vec2(100.0,100.0), genf32(LITTLE)));
     }
 
     loop {
@@ -33,7 +34,7 @@ async fn main() {
             x.integrate(dt);
         }
 
-        flow(&mut population, dt, 250.0);
+        flow(&mut population, dt, 10000.0);
 
         clash(&mut population);
         clash(&mut population);

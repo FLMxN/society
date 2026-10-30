@@ -41,6 +41,12 @@ pub fn clash(xs: &mut [Entity]) {
             if dist >= min_dist || dist < 1e-4 {
                 continue;
             }
+            else {
+                xs[i].speed.x *= -1.0;
+                xs[i].speed.y *= -1.0;
+                xs[j].speed.x *= -1.0;
+                xs[j].speed.y *= -1.0;
+            }
 
             let overlap = min_dist - dist;
             let n = delta / dist;

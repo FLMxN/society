@@ -35,10 +35,10 @@ impl Entity {
 
     pub fn integrate(&mut self, dt: f32) {
         let multiplier = match self.kind {
-            Choleric => -1.0001,
-            Sanguine => 1.0001,
-            Melancholic => -0.9999,
-            Phlegmatic => 0.9999
+            Choleric => -1.01,
+            Sanguine => 1.001,
+            Melancholic => -0.99,
+            Phlegmatic => 0.999
         };
         self.pos += self.speed * dt;
         // if (self.speed - MAX_SPEED).length() < 1e-4 {
