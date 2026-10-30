@@ -20,20 +20,20 @@ async fn main() {
     let n= args.pop().unwrap_or(String::try_from("1").unwrap()).parse::<i32>().unwrap();
     let mut population: Vec<Entity> = vec![];
     for _ in 0..n {
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Choleric, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Sanguine, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Phlegmatic, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
-        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Melancholic, vec2(genf32(LITTLE), genf32(LITTLE)), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Choleric, vec2(10.0,10.0), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Sanguine, vec2(10.0,10.0), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Phlegmatic, vec2(10.0,10.0), genf32(MEDIUM)));
+        population.push(Entity::new(vec2(genf32(LARGE), genf32(LARGE)), Melancholic, vec2(10.0,10.0), genf32(MEDIUM)));
     }
 
     loop {
-        let dt = get_frame_time().min(0.033);
+        let dt = get_frame_time().min(0.05);
 
         for x in &mut population {
             x.integrate(dt);
         }
 
-        flow(&mut population, dt, 400.0);
+        flow(&mut population, dt, 250.0);
 
         clash(&mut population);
         clash(&mut population);

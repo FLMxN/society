@@ -13,11 +13,17 @@ pub fn flow(xs: &mut [Entity], dt: f32, strength: f32) {
     }
 
     for x in xs.iter_mut() {
+        let multiplier = match x.kind {
+            Character::Choleric => 2.0,
+            Character::Sanguine => 1.0,
+            Character::Melancholic => 0.5,
+            Character::Phlegmatic => 0.1,
+        };
         if let Some(&(sum, count)) = sums.get(&x.kind) {
             if count <= 1.0 { continue; }
             let centroid = sum / count as f32;
             let dir = (centroid - x.pos).normalize_or_zero();
-            x.speed += dir * strength * dt;
+            x.speed += dir * strength * multiplier * dt;
         }
     }
 }
