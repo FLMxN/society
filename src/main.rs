@@ -14,7 +14,7 @@ use crate::entropy::genf32;
 
 use crate::physics::{flow, clash, constrain};
 
-#[macroquad::main("society v0.1")]
+#[macroquad::main("society v0.2")]
 async fn main() {
     let mut args: Vec<String> = env::args().skip(1).collect();
     let n= args.pop().unwrap_or(String::try_from("1").unwrap()).parse::<i32>().unwrap();

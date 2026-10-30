@@ -53,8 +53,8 @@ pub fn clash(xs: &mut [Entity]) {
     }
 }
 
-pub fn constrain(xs: &mut [Entity], width: f32, height: f32) {
-    for x in xs.iter_mut() {
+pub fn constrain(population: &mut [Entity], width: f32, height: f32) {
+    for x in population.iter_mut() {
         if x.pos.x - x.radius < 0.0 {
             x.pos.x = x.radius;
             if x.speed.x < 0.0 {

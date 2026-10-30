@@ -1,6 +1,8 @@
 use crate::people::Character::{Choleric, Melancholic, Phlegmatic, Sanguine};
-use macroquad::math::Vec2;
+use macroquad::math::{Vec2, vec2};
 use macroquad::color::{Color, colors};
+
+const MAX_SPEED: Vec2 = vec2(100.0, 100.0);
 
 #[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub enum Character {
@@ -32,7 +34,15 @@ impl Entity {
     }
 
     pub fn integrate(&mut self, dt: f32) {
+        let multiplier = match self.kind {
+            Choleric => 1.1,
+            Sanguine => 1.05,
+            Melancholic => -1.05,
+            Phlegmatic => -1.1
+        };
         self.pos += self.speed * dt;
-        self.speed *= 0.94;
+        if (self.speed - MAX_SPEED).length() < 1e-4 {
+            self.speed += (MAX_SPEED - self.speed) * multiplier;
+        }
     }
 }
