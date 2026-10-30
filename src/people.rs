@@ -1,10 +1,13 @@
+use crate::entropy::GenType::{LITTLE, TINY};
+use crate::entropy::genf32;
 use crate::people::Character::{Choleric, Melancholic, Phlegmatic, Sanguine};
-use macroquad::math::{Vec2, vec2};
+use macroquad::input::KeyCode::T;
+use macroquad::math::{Vec2};
 use macroquad::color::{Color, colors};
 
 // const MAX_SPEED: Vec2 = vec2(100.0, 100.0);
 
-#[derive(Eq, Hash, PartialEq, Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy, Debug)]
 pub enum Character {
     Choleric,
     Melancholic,
@@ -35,9 +38,9 @@ impl Entity {
 
     pub fn integrate(&mut self, dt: f32) {
         let multiplier = match self.kind {
-            Choleric => -1.01,
+            Choleric => 1.001*genf32(TINY),
             Sanguine => 1.001,
-            Melancholic => -0.99,
+            Melancholic => 0.999*genf32(TINY),
             Phlegmatic => 0.999
         };
         self.pos += self.speed * dt;

@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
-use macroquad::math::Vec2;
+use macroquad::math::{Vec2, vec2};
 
-use crate::people::{Character, Entity};
+use crate::{entropy::{GenType::{NORMAL}, genf32}, people::{Character, Entity}};
 
 pub fn flow(xs: &mut [Entity], dt: f32, strength: f32) {
     let mut sums: HashMap<Character, (Vec2, f32)> = HashMap::new();
@@ -21,7 +21,7 @@ pub fn flow(xs: &mut [Entity], dt: f32, strength: f32) {
         };
         if let Some(&(sum, count)) = sums.get(&x.kind) {
             if count <= 1.0 { continue; }
-            let centroid = sum / count as f32;
+            let centroid = (sum / count as f32) + vec2(genf32(NORMAL), genf32(NORMAL)) * 10.0*multiplier;
             let dir = (centroid - x.pos).normalize_or_zero();
             x.speed += dir * strength * multiplier * dt;
         }
